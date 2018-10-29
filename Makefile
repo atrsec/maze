@@ -1,6 +1,6 @@
 CC=gcc
 CFLAGS=-W -Wall -pedantic
-EXEC=labirynthe
+EXEC=maze
 FILE=builder.c main.c
 
 all: $(FILE)
@@ -8,7 +8,7 @@ all: $(FILE)
 
 debug:
 	$(CC) -o $(EXEC) $(FILE) -g
-	gdb $(EXEC) tests/labfile.txt
+	gdb $(EXEC) tests/mazefile.txt
 	
 clean:
 	rm -rf *.o $(EXEC)

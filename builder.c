@@ -1,26 +1,44 @@
 #include "builder.h"
 
-labirynthe *build_from_file(char *filename){
-	FILE *labFile = fopen(filename, "r");
-	if (labFile == NULL)
+MAZE *build_from_file(char *filename){
+	FILE *mazeFile = fopen(filename, "r");
+	if (mazeFile == NULL)
 		fileError("Le fichier n'a pas pu être ouvert.\n");
-	return lab;
+	MAZE *maze = parse_file(mazeFile);
+	fclose(mazeFile);
+	return maze;
 
 }
 
-labirynthe *parse_first_line(FILE *f){
+MAZE *parse_file(FILE *f){
 	int line, column, bposL, bposC, eposL, eposC;
 	int resScan = fscanf(f, "%d %d %d %d %d %d\n", &line, &column, &bposL, &bposC, &eposL, &eposC);
 	if (resScan != 6)
 		fileError("Error format: line 1\n");
-	labirynthe *lab = alloc_labirynthe(line * column);
-	lab->line = line;
+	MAZE *maze = alloc_maze(line * column);
+	maze->line = line;
+	maze->column = column;
+	maze->begin = bposL * column + bposC;
+	maze->end = eposL * column + eposC;
+	int newCell;
+	for(int i = 0; i < line; i++){
+		for(int j = 0; j < column; j++){
+			resScan = fscanf(f, "%d", &newCell);
+			if (resScan != 1)
+				fileError("Error format !");
+			maze->cells[i * column + j] = newCell;
+			fscanf(f, " ");
+		}
+		fscanf(f, "\n");
+	}
+	return maze;
+	
 }
 
-labirynthe *alloc_labirynthe(int nbcells){
-	labirynthe *lab = malloc(sizeof(labirynthe));
-	lab->cells = malloc(sizeof(short int) * nbcells);
-	return lab;
+MAZE *alloc_maze(int nbcells){
+	MAZE *maze = malloc(sizeof(MAZE));
+	maze->cells = malloc(sizeof(short int) * nbcells);
+	return maze;
 }
 
 void fileError(char *message){
@@ -28,4 +46,10 @@ void fileError(char *message){
 	exit(1);
 }
 
-//labirynthe *build_random(int line, int column);
+void printMaze(MAZE *maze){
+	printf("line = %d\ncolumn = %d\nbegin = %d\nend = %d\n", maze->line, maze->column, maze->begin, maze->end);
+	for (int i = 0; i < maze->line * maze->column; i++)
+		printf("Pos: %d == %d\n", i, maze->cells[i]); 
+}
+
+//MAZE *build_random(int line, int column);

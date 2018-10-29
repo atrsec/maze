@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-struct labirynthe {
+struct maze {
 	int line;
 	int column;
 	short int *cells;
@@ -13,13 +13,14 @@ struct labirynthe {
 	int end;
 };
 
-typedef struct labirynthe labirynthe;
+typedef struct maze MAZE;
 
-labirynthe *build_from_file(char *filename);
-labirynthe *build_random(int line, int column);
+MAZE *build_from_file(char *filename);
+MAZE *build_random(int line, int column);
 void fileError(char *message);
-labirynthe *parse_first_line(char *line);
-labirynthe *alloc_labirynthe(int nbcells);
+MAZE *parse_file(FILE *f);
+MAZE *alloc_maze(int nbcells);
 char *erase_nl(char *line, ssize_t size);
+void printMaze(MAZE *lab);
 
 #endif
