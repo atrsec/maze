@@ -1,1 +1,1 @@
-# labirynthe
+# Maze
