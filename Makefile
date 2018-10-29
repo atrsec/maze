@@ -1,14 +1,14 @@
 CC=gcc
 CFLAGS=-W -Wall -pedantic
 EXEC=maze
-FILE=builder.c main.c
+FILE=builder.c maze.c main.c
 
 all: $(FILE)
 	$(CC) -o $(EXEC) $(FILE)
 
 debug:
 	$(CC) -o $(EXEC) $(FILE) -g
-	gdb $(EXEC) tests/mazefile.txt
+	gdb $(EXEC)
 	
 clean:
 	rm -rf *.o $(EXEC)

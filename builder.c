@@ -46,7 +46,7 @@ void fileError(char *message){
 	exit(1);
 }
 
-void printMaze(MAZE *maze){
+void printStructMaze(MAZE *maze){
 	printf("line = %d\ncolumn = %d\nbegin = %d\nend = %d\n", maze->line, maze->column, maze->begin, maze->end);
 	for (int i = 0; i < maze->line * maze->column; i++)
 		printf("Pos: %d == %d\n", i, maze->cells[i]); 
