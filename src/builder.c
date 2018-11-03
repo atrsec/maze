@@ -51,7 +51,7 @@ void free_maze(MAZE *maze){
 	for(int i = 0; i < maze->line; i++)
 		free(maze->cells[i]);
 	free(maze->cells);
-	//free(maze->begin);
+	free(maze->begin);
 	free(maze->end);
 	free(maze);
 }
