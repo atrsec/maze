@@ -89,24 +89,35 @@ MAZE *build_random(){
 	int line = 0;
 	int column = 0;
 	int chance = 0;
+	int resscan;
 	printf("Maze's number of line:\n");
-	fscanf(stdin,"%d", &line);
+	resscan = fscanf(stdin,"%d", &line);
+	if (resscan != 1)
+		fileError("Bad input !\n");
 	printf("Maze's number of columns:\n");
-	fscanf(stdin,"%d", &column);
+	resscan = fscanf(stdin,"%d", &column);
+	if (resscan != 1)
+		fileError("Bad input !\n");
 	MAZE *maze = alloc_maze(line, column);
 	maze->line = line;
 	maze->column = column;
-	printf("Maze's begin (0 0):\n");
-	fscanf(stdin,"%d %d", &(maze->begin->l), &(maze->begin->c));
-	printf("Maze's end (9 9):\n");
-	fscanf(stdin,"%d %d", &(maze->end->l), &(maze->end->c));
+	printf("Maze's begin (x y):\n");
+	resscan = fscanf(stdin,"%d %d", &(maze->begin->l), &(maze->begin->c));
+	if (resscan != 2)
+		fileError("Bad input !\n");
+	printf("Maze's end (x y):\n");
+	resscan = fscanf(stdin,"%d %d", &(maze->end->l), &(maze->end->c));
+	if (resscan != 2)
+		fileError("Bad input !\n");
 	if (maze->begin->l >= maze->line || maze->begin->c >= maze->column ||
 	    maze->end->l >= maze->line || maze->end->c >= maze->column){
 		printf("Error the position is not in the maze !\n");
-		exit(2);
+		exit(1);
 	}
 	printf("Maze's %% of chance to break the wall:\n");
-	fscanf(stdin,"%d", &chance);
+	resscan = fscanf(stdin,"%d", &chance);
+	if (resscan != 1)
+		fileError("Bad input !\n");
 	for (int i = 0; i < maze->line; i++){
 		for (int j = 0; j < maze->column; j++){
 			maze->cells[i][j] = 15;
