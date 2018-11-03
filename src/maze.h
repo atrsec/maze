@@ -33,7 +33,7 @@ int play(MAZE *maze);
 void print_cell(MAZE *maze, int l, int c);
 int is_begin(MAZE *maze, int l, int c);
 int is_end(MAZE *maze, int l, int c);
-int solve(MAZE *maze);
+int solve(MAZE *maze, int difficulty);
 struct termios prepareTerminal();
 void getTerminalBack(struct termios *backup);
 

@@ -85,6 +85,7 @@ void break_wall(MAZE *maze, int l, int c, int chance){
 }
 
 MAZE *build_random(){
+	srand(time(0));
 	int line = 0;
 	int column = 0;
 	int chance = 0;
@@ -111,7 +112,6 @@ MAZE *build_random(){
 			maze->cells[i][j] = 15;
 		}
 	}
-	srand(time(0));
 	for (int i = 0; i < maze->line; i++){
 		for (int j = 0; j < maze->column; j++){
 			break_wall(maze, i, j, chance);

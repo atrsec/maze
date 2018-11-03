@@ -29,37 +29,36 @@ int isDisplayed(int cell){
 
 void print_cell(MAZE *maze, int l, int c){
 	if (isDisplayed(maze->cells[l][c])){
-		printf ("\033[34;01mo\033[00m");
+		printf ("\033[34;01m%s\033[00m", "😎");
 	}
 	else{
 		if (is_begin(maze, l, c))
-			printf ("\033[31;01mx\033[00m");
+			printf ("\033[31;01m%s\033[00m", "⛔");
 		else if (is_end(maze, l, c))
-			printf ("\033[32;01mx\033[00m");
+			printf ("\033[32;01m%s\033[00m", "✅");
 		else
-			printf(".");
+			printf ("\033[31;01m%s\033[00m", "..");
 	}
 }
 
 void printMaze(MAZE *maze){
 	for (int i = 0; i < maze->line; i++){
 		for(int j = 0; j < maze->column; j++)
-			(isWall(maze->cells[i][j], UP)) ?  printf("+-") : printf("+ ");
-		printf("+\n");
+			(isWall(maze->cells[i][j], UP)) ?  (i == 0) ? printf("╦══"): printf("╬══") : (i == 0) ? printf("╦ ") : printf("╬  ");
+		(i == 0) ? printf("╦\n") : printf("╬\n");
 		for (int j = 0; j < maze->column; j++){
-			(isWall(maze->cells[i][j], LEFT))?  printf("|") : printf(" ");
-			//(isDisplayed(maze->cells[i][j]))? printf("o") : printf(".");
+			(isWall(maze->cells[i][j], LEFT))?  printf("║") : printf(" ");
 			print_cell(maze, i, j);
 			if (j + 1 >= maze->column || !isWall(maze->cells[i][j + 1], LEFT)){
 				if (isWall(maze->cells[i][j], RIGHT))
-					printf("|");
+					printf("║");
 			}
 		}
 		printf("\n");
 	}
 	for (int j = 0; j < maze->column; j++)
-		(isWall(maze->cells[maze->line - 1][j], DOWN))?  printf("+-"): printf("Error");
-	printf("+\n");
+		(isWall(maze->cells[maze->line - 1][j], DOWN))?  printf("╬══"): printf("Error");
+	printf("╬\n");
 }
 
 void update(MAZE *maze){
@@ -120,12 +119,16 @@ int noIssue(short int cell){
 	return 1;
 }
 
-int solve(MAZE *maze){
+int G_DIFFICULTY = 2;
+
+int solve(MAZE *maze, int difficulty){
+	G_DIFFICULTY = difficulty;
 	struct pos *current_pos = malloc(sizeof(struct pos));
 	current_pos->l = maze->begin->l;
 	current_pos->c = maze->begin->c;
-	int res_computer = explore(maze, current_pos);
+	int res = explore(maze, current_pos);
 	free(current_pos);
+	return res;
 }
 
 
@@ -133,7 +136,7 @@ int explore(MAZE *maze, struct pos *pos){
 	setDisplayBit(maze, pos, 1);
 	setAlreadyDone(maze, pos);
 	update(maze);
-	usleep(500000);
+	usleep(1000000 / G_DIFFICULTY);
 	if (maze->end->l == pos->l && maze->end->c == pos->c)
 		return(0);
 	int res;
@@ -221,10 +224,12 @@ int play(MAZE *maze){
 		update(maze);
 	}
 	if (c != 'q'){
+		setDisplayBit(maze, &current, 0);
 		getTerminalBack(&backup);
 		printf("Congratulation, you find a way !\n");
 		return 0;
 	}
+	setDisplayBit(maze, &current, 0);
 	getTerminalBack(&backup);
 	printf("Coward !!\n");
 	return 1;

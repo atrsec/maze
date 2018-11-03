@@ -1,7 +1,7 @@
 CC=gcc
 CFLAGS=-W -Wall -pedantic
 EXEC=maze
-FILE=builder.c maze.c main.c
+FILE=src/builder.c src/maze.c src/main.c
 
 all: $(FILE)
 	$(CC) -o $(EXEC) $(FILE)
